@@ -1,0 +1,12 @@
+# IDEs and editors
+.vscode/
+.idea/
+.git/
+
+# Ganache blockchain data
+ganache-data/
+
+# RabbitMQ data
+rabbitmq-data/
+!.gitignore
+.env

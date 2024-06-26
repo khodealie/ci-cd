@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/configs:/etc/nginx/conf.d
+      - ./nginx/logs:/var/log/nginx
+    depends_on:
+      - rabbitmq
+      - ganache
+    networks:
+      - infrafund
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+    volumes:
+      - ./rabbitmq/data:/var/lib/rabbitmq
+    networks:
+      - infrafund
+
+  ganache:
+    build:
+      context: ./ganache
+      dockerfile: Dockerfile
+    command: ganache-cli -d --db /ganache/data --mnemonic "myth like bonus scare over problem client lizard pioneer submit female collect"
+    volumes:
+      - ./ganache/data:/ganache/data
+    networks:
+      - infrafund
+
+networks:
+  infrafund:
+    driver: bridge
